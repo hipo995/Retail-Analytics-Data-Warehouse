@@ -1,122 +1,151 @@
- Retail Sales Analytics Data Warehouse (SQLite + SQL)
+Retail Sales Analytics Data Warehouse (SQLite + SQL)
 
- Project Overview
+Project Overview
 
-This project simulates a real-world retail analytics system using a relational database (SQLite).  
-It demonstrates how raw sales data can be structured, stored, and analyzed to generate business insights.
+This project simulates a retail analytics data warehouse using SQLite. It demonstrates how transactional sales data can be structured into a relational model and analyzed to generate business insights.
 
-The goal is to replicate a simplified **data warehouse environment** used in real companies for reporting and decision-making.
+The project reflects a simplified version of data warehouse systems used in organizations for reporting and decision-making.
 
----
+Business Objectives
 
- 🎯 Business Objective
-
-The main objective of this project is to answer key business questions such as:
+The objective of this project is to answer key analytical questions:
 
 - What is the total revenue?
 - Who are the most valuable customers?
 - Which products perform best?
 - How does revenue evolve over time?
-- Which categories generate the most sales?
+- Which product categories generate the most sales?
 
+Data Model
 
+The database follows a star schema design consisting of dimension tables and a central fact table.
 
- 🧱 Database Structure
+Dimension Tables
 
-The project follows a simple **star schema design**:
+customers
+- customer_id (Primary Key)
+- name
+- city
+- signup_date
 
- 📊 Tables:
+products
+- product_id (Primary Key)
+- name
+- category
+- price
 
-- **customers**
-  - customer_id (PK)
-  - name
-  - city
-  - signup_date
+Fact Table
 
-- **products**
-  - product_id (PK)
-  - name
-  - category
-  - price
+sales
+- sale_id (Primary Key)
+- customer_id (Foreign Key)
+- product_id (Foreign Key)
+- date_id
+- quantity
+- total_price
 
-- **sales (Fact Table)**
-  - sale_id (PK)
-  - customer_id (FK)
-  - product_id (FK)
-  - date_id
-  - quantity
-  - total_price
+Technologies Used
 
----
+- SQLite
+- SQL
+- DB Browser for SQLite (or any SQL editor)
 
-##⚙️ Technologies Used
-
-- SQLite (Database)
-- SQL (Data Modeling & Analysis)
-- DB Browser for SQLite / any SQL editor
-
----
-
-## 📥 Data Setup
+Data Setup
 
 The database is created in three steps:
 
-1. Create tables → `01_create_tables.sql`
-2. Insert sample data → `02_insert_data.sql`
-3. Run analytics queries → `03_business_queries.sql`
+01_create_tables.sql     - Schema creation
+02_insert_data.sql       - Data insertion
+03_business_queries.sql  - Analytical queries
 
----
+Key Analysis
 
-## 📊 Key Analysis Performed
-
-This project includes SQL queries for:
-
-### 💰 Business KPIs
+Business Metrics
 - Total revenue
 - Number of transactions
 - Average order value
 
-### 👤 Customer Analysis
+Customer Analysis
 - Revenue per customer
 - Top customers
 - Revenue by city
 
-### 📦 Product Analysis
+Product Analysis
 - Best-selling products
 - Revenue per product
 - Category performance
 
-### 📅 Time Analysis
+Time Analysis
 - Revenue trends over time
-- Best performing sales periods
+- Best-performing periods
 
----
+Performance Optimization
 
-## 📈 Example Insights
+To improve query performance and simulate real-world scalability, indexing strategies were implemented.
 
-- Revenue is concentrated among top customers
-- Electronics category generates the highest revenue
-- A small number of products drive most sales
+Indexing Strategy
 
----
+CREATE INDEX idx_sales_customer_id 
+ON sales(customer_id);
 
-## 🧠 What I Learned
+CREATE INDEX idx_sales_product_id 
+ON sales(product_id);
 
-- Designing relational databases (star schema)
-- Writing complex SQL queries (JOINs, GROUP BY, HAVING)
-- Performing business-oriented data analysis
-- Structuring a data project like in real companies
+CREATE INDEX idx_sales_date_id 
+ON sales(date_id);
 
----
+CREATE INDEX idx_sales_customer_date 
+ON sales(customer_id, date_id);
 
-## 🚀 Future Improvements
+Impact
 
-- Add a proper date dimension table
-- Integrate Python for automation (ETL pipeline)
-- Build a dashboard (Power BI / Tableau)
-- Add advanced SQL (window functions, cohort analysis)
+- Improved JOIN performance
+- Faster aggregation queries
+- Reduced full table scans
+- Better scalability for larger datasets
 
----
+Query Analysis
 
-## 📁 Project Structure
+EXPLAIN QUERY PLAN
+SELECT customer_id, SUM(total_price)
+FROM sales
+GROUP BY customer_id;
+
+Example Insights
+
+- Revenue is concentrated among a small group of customers
+- Certain product categories generate a disproportionate share of revenue
+- A limited number of products account for the majority of sales
+- Revenue trends indicate time-based patterns
+
+Learning Outcomes
+
+- Designing relational databases using a star schema
+- Writing analytical SQL queries with JOIN, GROUP BY, and HAVING
+- Applying indexing for performance optimization
+- Structuring a data project in a professional format
+- Translating business questions into data analysis
+
+Future Improvements
+
+- Introduce a date dimension table
+- Implement ETL processes using Python
+- Build a dashboard using Power BI or Tableau
+- Apply advanced SQL techniques such as window functions and cohort analysis
+- Migrate to PostgreSQL for advanced database features
+
+Project Structure
+
+/retail-sales-analytics
+│
+├── 01_create_tables.sql
+├── 02_insert_data.sql
+├── 03_business_queries.sql
+├── 04 performance_improvement.sql
+│
+└── README.md
+
+Next Steps
+
+The next phase of this project will include the development of a dashboard to visualize key metrics such as revenue trends, customer segmentation, and product performance.
 
